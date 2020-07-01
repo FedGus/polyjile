@@ -1,11 +1,22 @@
 <template>
 <div>
   <header>
-<button @click="show = !show"></button>
-<button>Создать</button>
+<button @click="show = !show">Меню</button>
+<button @click="showModal = true">Создать</button>
 </header>
 <div class="main">
-
+<transition name="fade" appear>
+  <div class="modal-overlay" v-if="showModal">
+    <div class="modal">
+      <form @submit="addLocation(title, text)">
+        <input v-model="title" placeholder="Location Name">
+        <input v-model="text" placeholder="Location Image URL">
+        <button class="button-primary" type="submit">Add New Location</button>
+      </form>
+      <button @click="showModal=false">Отмена</button>
+    </div>
+  </div>
+</transition>
 <div class="sidebar">
   <ul>
     <li><ion-icon name="albums-outline"></ion-icon></li>
@@ -71,11 +82,7 @@
 </section>
 </div>
 </div>
-<form @submit="addLocation(title, text)">
-  <input v-model="title" placeholder="Location Name">
-  <input v-model="text" placeholder="Location Image URL">
-  <button type="submit">Add New Location</button>
-</form>
+
 
 </div>
 </template>
@@ -92,6 +99,7 @@ export default {
    data () {
      return {
        show: false,
+       showModal: true,
        backlog: [],
        inProgress: [],
        reviews: [],
@@ -181,11 +189,35 @@ li {
 }
 
 .menu li {
-margin-left: 50px;
+  margin-left: 40px;
 }
 ion-icon {
   font-size: 20px;
   color: #172b4d;
+}
+.modal {
+  background: #fff;
+  left: 50%;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 400px;
+  background: #fff;
+  border: 1px solid #ebecf0;
+  border-radius: 4px 4px 4px 4px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px -4px rgba(9,30,66,0.25), 0 0 1px rgba(9,30,66,0.31);
+  padding: 25px;
+  z-index: 11;
+}
+.modal-overlay {
+  position: fixed;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 .issue {
     color: #172b4d;
@@ -200,6 +232,23 @@ ion-icon {
     margin: 5px;
     padding: 10px
 }
+button {
+    box-sizing: border-box;
+    transition: background-color .1s ease-out;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 4px 10px;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+.button-primary {
+    background-color: #0052cc;
+    border-color: transparent;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
 
 .slide-fade-enter-active {
   transition: all .3s ease;
@@ -210,6 +259,17 @@ ion-icon {
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active до версии 2.1.8 */ {
   transform: translateX(-200px);
+  opacity: 0;
+}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>
