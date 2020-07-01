@@ -9,9 +9,9 @@
   <div class="modal-overlay" v-if="showModal">
     <div class="modal">
       <form @submit="addLocation(title, text)">
-        <input v-model="title" placeholder="Location Name">
-        <input v-model="text" placeholder="Location Image URL">
-        <button class="button-primary" type="submit">Add New Location</button>
+        <input v-model="title" placeholder="Тема">
+        <input v-model="text" placeholder="Описание">
+        <button class="button-primary" type="submit">Создать</button>
       </form>
       <button @click="showModal=false">Отмена</button>
     </div>
@@ -40,7 +40,7 @@
 <div class="board">
 <section>
   <div class="column">
-      <draggable group="tasks" :list="backlog" @change="log">
+      <draggable group="tasks" :list="backlog" @change="backlogCol">
         <div class="issue" v-for="(task, idx) in backlog" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
@@ -50,7 +50,7 @@
       </draggable>
   </div>
   <div class="column">
-      <draggable group="tasks" :list="inProgress" @change="log">
+      <draggable group="tasks" :list="inProgress" @change="progressCol">
        <div class="issue" v-for="(task, idx) in inProgress" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
@@ -60,7 +60,7 @@
       </draggable>
   </div>
   <div class="column">
-      <draggable group="tasks" :list="reviews" @change="log">
+      <draggable group="tasks" :list="reviews" @change="reviewCol">
        <div class="issue" v-for="(task, idx) in reviews" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
@@ -70,7 +70,7 @@
       </draggable>
   </div>
   <div class="column">
-      <draggable group="tasks" :list="done" @change="log">
+      <draggable group="tasks" :list="done" @change="doneCol">
        <div class="issue" v-for="(task, idx) in done" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
@@ -99,7 +99,7 @@ export default {
    data () {
      return {
        show: false,
-       showModal: true,
+       showModal: false,
        backlog: [],
        inProgress: [],
        reviews: [],
@@ -112,8 +112,10 @@ export default {
    return {
      backlog: db.collection('tasks').where('status', '==', 'backlog'),
      inProgress: db.collection('tasks').where('status', '==', 'progress'),
-     reviews: db.collection('tasks').where('status', '==', 'reviews'),
-     done: db.collection('tasks').where('status', '==', 'done')
+     reviews: db.collection('tasks').where('status', '==', 'review'),
+     done: db.collection('tasks').where('status', '==', 'done'),
+
+     
    }
    
  },
@@ -126,11 +128,41 @@ export default {
     deleteLocation (id) {   // <-- новый метод
      db.collection('tasks').doc(id).delete()
    },
-   log: function(evt) {
+   backlogCol: function(evt) {
+     window.console.log(evt);
+     // if (evt.added) {
+     
+      //   let status = "backlog";
+      db.collection('tasks').doc(evt.added.element.id).update({ 'status' : 'backlog' });
+      this.backlog.splice(evt.added.newIndex, 1)
+     // }
+    },
+   progressCol: function(evt) {
+       window.console.log(evt);
+      // if (evt.added) {
+      //   let idEl = evt.added.element.id;
+      //   let status = "progress";
+      db.collection('tasks').doc(evt.added.element.id).update({ 'status': 'progress' });
+      this.inProgress.splice(evt.added.newIndex, 1)
+      // }
+    },
+    reviewCol: function(evt) {
       window.console.log(evt);
-      if (evt == 'added') {
-        alert('aaa')
-      }
+      // if (evt.added) {
+      //   let idEl = evt.added.element.id;
+      //   let status = "review";
+      db.collection('tasks').doc(evt.added.element.id).update({ 'status' : 'review' });
+      this.reviews.splice(evt.added.newIndex, 1)
+      // }
+    },
+   doneCol: function(evt) {
+      window.console.log(evt);
+      // if (evt.added) {
+      //   let idEl = evt.added.element.id;
+      //   let status = "done";
+      db.collection('tasks').doc(evt.added.element.id).update({ 'status' : 'done' });
+      this.done.splice(evt.added.newIndex, 1)
+      // }
     }
    }
 }
