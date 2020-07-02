@@ -1,9 +1,6 @@
 <template>
 <div>
-  <header>
-<button @click="show = !show">Меню</button>
-<button @click="showModal = true">Создать</button>
-</header>
+ 
 <div class="main">
 <transition name="fade" appear>
   <div class="modal-overlay" v-if="showModal">
@@ -17,15 +14,7 @@
     </div>
   </div>
 </transition>
-<div class="sidebar">
-  <ul>
-    <li><ion-icon name="albums-outline"></ion-icon></li>
-    <li><ion-icon name="clipboard-outline"></ion-icon></li>
-    <li><ion-icon name="calendar-outline"></ion-icon></li>
-    <li><ion-icon name="bug-outline"></ion-icon></li>
-    <li><ion-icon name="bar-chart-outline"></ion-icon></li>
-  </ul>
-</div>
+
 <transition name="slide-fade">
 <aside v-if="show">
   <ul class="menu">
@@ -171,12 +160,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-header {
-height: 50px;
-box-shadow: 0 0 6px grey;
-position: relative;
-z-index: 3;
-}
+
 section {
    display: grid;
    grid-column-gap: 10px;
@@ -197,28 +181,13 @@ aside {
   z-index: 1;
 }
 
-.sidebar {
-  width: 56px;
-  background: #f4f5f7;
-  position: relative;
-  z-index: 2;
-}
+
 
 .board {
   display: flex;
   flex-direction: column;
 }
-ul {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-li {
-  list-style: none;
-  padding: 10px 0 10px 10px;
-  height: 25px;
-}
+
 
 .menu li {
   margin-left: 40px;
