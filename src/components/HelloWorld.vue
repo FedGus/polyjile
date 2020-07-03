@@ -139,10 +139,6 @@ section {
   min-width: 25%;
 }
 
-.main {
-  display: flex;
-}
-
 .board {
   display: flex;
   flex-direction: column;
