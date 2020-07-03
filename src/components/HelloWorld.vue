@@ -2,30 +2,6 @@
 <div>
  
 <div class="main">
-<transition name="fade" appear>
-  <div class="modal-overlay" v-if="showModal">
-    <div class="modal">
-      <form @submit="addLocation(title, text)">
-        <input v-model="title" placeholder="Тема">
-        <input v-model="text" placeholder="Описание">
-        <button class="button-primary" type="submit">Создать</button>
-      </form>
-      <button @click="showModal=false">Отмена</button>
-    </div>
-  </div>
-</transition>
-
-<transition name="slide-fade">
-<aside v-if="show">
-  <ul class="menu">
-    <li>Главная</li>
-    <li>Задачи</li>
-    <li>Календарь</li>
-    <li>Тестирование</li>
-    <li>Отчеты</li>
-  </ul>
-</aside>
-</transition>
 <div class="board">
 <section>
   <div class="column">
@@ -87,14 +63,10 @@ export default {
   },
    data () {
      return {
-       show: false,
-       showModal: false,
        backlog: [],
        inProgress: [],
        reviews: [],
-       done: [],
-       title: '',      // <-- новое свойство
-       text: '',    // <-- новое свойство
+       done: []
      }
    },
    firestore () {
@@ -109,11 +81,6 @@ export default {
    
  },
    methods: {
-   addLocation (title, text) {      // <-- новый метод
-     const timeAdd = new Date()
-     const status = 'backlog'
-     db.collection('tasks').add({ title, text, timeAdd, status })
-   },
     deleteLocation (id) {   // <-- новый метод
      db.collection('tasks').doc(id).delete()
    },
@@ -162,64 +129,30 @@ export default {
 <style scoped>
 
 section {
-   display: grid;
-   grid-column-gap: 10px;
-   grid-template-columns: repeat(4, minmax(200px, 1fr));
+   display: flex;
+   box-sizing: border-box;
+   /* grid-column-gap: 10px;
+   grid-template-columns: repeat(4, minmax(200px, 1fr)); */
 }
 .column {
   background: #f4f5f7;
+  min-width: 25%;
 }
 
 .main {
   display: flex;
 }
-aside {
-  width: 200px;
-  height: 500px;
-  background: #f4f5f7;
-  position: absolute;
-  z-index: 1;
-}
-
-
 
 .board {
   display: flex;
   flex-direction: column;
 }
 
-
-.menu li {
-  margin-left: 40px;
-}
 ion-icon {
   font-size: 20px;
   color: #172b4d;
 }
-.modal {
-  background: #fff;
-  left: 50%;
-  position: fixed;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 400px;
-  background: #fff;
-  border: 1px solid #ebecf0;
-  border-radius: 4px 4px 4px 4px;
-  overflow: hidden;
-  box-shadow: 0 8px 16px -4px rgba(9,30,66,0.25), 0 0 1px rgba(9,30,66,0.31);
-  padding: 25px;
-  z-index: 11;
-}
-.modal-overlay {
-  position: fixed;
-  top:0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  background-color: rgba(0, 0, 0, 0.3);
-}
+
 .issue {
     color: #172b4d;
     background-color: #fff;
@@ -249,28 +182,5 @@ button {
     color: #fff;
     text-decoration: none;
     font-weight: 600;
-}
-
-.slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-leave-active {
-  transition: all .3s cubic-bezier(.65, .05, 0.36, 1);
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active до версии 2.1.8 */ {
-  transform: translateX(-200px);
-  opacity: 0;
-}
-
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>
