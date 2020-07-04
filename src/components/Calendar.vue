@@ -3,34 +3,33 @@
 	<div id="calendar">
 
 		<div class="calendar-controls">
- <button @click="addEvent = true">Создать</button>
 			<div v-if="message" class="notification is-success">{{ message }}</div>
 
 	<transition name="fade" appear>
       <div class="modal-overlay" v-if="addEvent">
         <div class="modal">
 				<div class="field">
-					<label class="label">Title</label>
+					<label class="label">Описание:</label>
 					<div class="control">
 						<input v-model="newEventTitle" class="input" type="text">
 					</div>
 				</div>
 
 				<div class="field">
-					<label class="label">Start date</label>
+					<label class="label">Начало:</label>
 					<div class="control">
 						<input v-model="newEventStartDate" class="input" type="datetime-local">
 					</div>
 				</div>
 
 				<div class="field">
-					<label class="label">End date</label>
+					<label class="label">Окончание:</label>
 					<div class="control">
 						<input v-model="newEventEndDate" class="input" type="datetime-local">
 					</div>
 				</div>
 
-				<button class="button is-info" @click="clickTestAddEvent">Add Event</button>
+				<button class="button is-info" @click="clickTestAddEvent">Добавить событие</button>
 				<button @click="addEvent=false">Отмена</button>
 			</div>
       </div>
@@ -38,6 +37,7 @@
 
 		</div>
 		<div class="calendar-parent">
+			<button @click="addEvent = true">Создать</button>
 			<calendar-view
 				:events="events"
 				:show-date="showDate"
@@ -56,6 +56,7 @@
 				@click-event="onClickEvent"
 			>
 				<calendar-view-header slot="header" slot-scope="{ headerProps }" :header-props="headerProps" @input="setShowDate" />
+				
 			</calendar-view>
 		</div>
 	</div>
@@ -187,8 +188,6 @@ export default {
 		color: #2c3e50;
 		height: 65vh;
 		width: 95vw;
-		margin-left: auto;
-		margin-right: auto;
 }
 .calendar-controls {
 	margin-right: 1rem;

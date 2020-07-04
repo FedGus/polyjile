@@ -4,12 +4,18 @@
 <div class="main">
 <div class="board">
 <section>
+  <div class="column"><h5>Backlog</h5></div>
+  <div class="column"><h5>In progress</h5></div>
+  <div class="column"><h5>Review</h5></div>
+  <div class="column"><h5>Done</h5></div>
+</section>
+<section>
   <div class="column">
       <draggable group="tasks" :list="backlog" @change="backlogCol">
         <div class="issue" v-for="(task, idx) in backlog" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
-          <span>{{ task.timeAdd }}</span>
+          <span>{{ dateTask(task.timeAdd) }}</span>
           <button @click="deleteLocation(task.id)">Delete</button>
         </div>
       </draggable>
@@ -19,7 +25,7 @@
        <div class="issue" v-for="(task, idx) in inProgress" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
-          <span>{{ task.timeAdd }}</span>
+          <span>{{ dateTask(task.timeAdd) }}</span>
           <button @click="deleteLocation(task.id)">Delete</button>
         </div>
       </draggable>
@@ -29,7 +35,7 @@
        <div class="issue" v-for="(task, idx) in reviews" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
-          <span>{{ task.timeAdd }}</span>
+          <span>{{ dateTask(task.timeAdd) }}</span>
           <button @click="deleteLocation(task.id)">Delete</button>
         </div>
       </draggable>
@@ -39,7 +45,7 @@
        <div class="issue" v-for="(task, idx) in done" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
-          <span>{{ task.timeAdd }}</span>
+          <span>{{ dateTask(task.timeAdd) }}</span>
           <button @click="deleteLocation(task.id)">Delete</button>
         </div>
       </draggable>
@@ -81,6 +87,18 @@ export default {
    
  },
    methods: {
+     dateTask(date) {
+       var options = {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+				weekday: 'long',
+				timezone: 'UTC',
+				hour: 'numeric',
+				minute: 'numeric'
+				};
+      return (new Date(date)).toLocaleString("ru", options)
+     },
     deleteLocation (id) {   // <-- новый метод
      db.collection('tasks').doc(id).delete()
    },
@@ -131,6 +149,7 @@ export default {
 section {
    display: flex;
    box-sizing: border-box;
+   width: calc(100vw - 45px);
    /* grid-column-gap: 10px;
    grid-template-columns: repeat(4, minmax(200px, 1fr)); */
 }
@@ -139,14 +158,12 @@ section {
   min-width: 25%;
 }
 
+h5 {
+  margin-left: 5px;
+}
 .board {
   display: flex;
   flex-direction: column;
-}
-
-ion-icon {
-  font-size: 20px;
-  color: #172b4d;
 }
 
 .issue {

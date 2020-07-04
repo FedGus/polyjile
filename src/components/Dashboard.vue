@@ -54,7 +54,7 @@ data: function() {
 <style>
 #small-calendar {
   font-size: 10px;
-		width: 25vw;
-
+  width: 25vw;
+  height: 40vh;
 }
 </style>

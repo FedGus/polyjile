@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     addLocation (title, text) {      // <-- новый метод
-     const timeAdd = new Date()
+     const timeAdd = (new Date()).toString()
      const status = 'backlog'
      db.collection('tasks').add({ title, text, timeAdd, status })
    }
@@ -87,6 +87,7 @@ main {
 }
 .main {
   display: flex;
+  width: 100%;
 }
 header {
   height: 50px;
@@ -110,6 +111,10 @@ aside {
 }
 .menu li {
   margin-left: 40px;
+}
+ion-icon {
+  font-size: 20px;
+  color: #172b4d;
 }
 
 .slide-fade-enter-active {
