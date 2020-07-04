@@ -3,12 +3,12 @@
 	<div id="calendar">
 
 		<div class="calendar-controls">
-
+ <button @click="addEvent = true">Создать</button>
 			<div v-if="message" class="notification is-success">{{ message }}</div>
 
-		
-
-			<div class="box">
+	<transition name="fade" appear>
+      <div class="modal-overlay" v-if="addEvent">
+        <div class="modal">
 				<div class="field">
 					<label class="label">Title</label>
 					<div class="control">
@@ -19,19 +19,22 @@
 				<div class="field">
 					<label class="label">Start date</label>
 					<div class="control">
-						<input v-model="newEventStartDate" class="input" type="date">
+						<input v-model="newEventStartDate" class="input" type="datetime-local">
 					</div>
 				</div>
 
 				<div class="field">
 					<label class="label">End date</label>
 					<div class="control">
-						<input v-model="newEventEndDate" class="input" type="date">
+						<input v-model="newEventEndDate" class="input" type="datetime-local">
 					</div>
 				</div>
 
 				<button class="button is-info" @click="clickTestAddEvent">Add Event</button>
+				<button @click="addEvent=false">Отмена</button>
 			</div>
+      </div>
+    </transition>
 
 		</div>
 		<div class="calendar-parent">
@@ -60,6 +63,7 @@
 </template>
 <script>
 // For testing against the published version
+import { db } from '../main'
 import {
 	CalendarView,
 	CalendarViewHeader,
@@ -86,48 +90,27 @@ export default {
 		return {
 			/* Show the current month, and give it some fake events to show */
 			showDate: this.thisMonth(1),
+			addEvent: false,
 			message: "",
 			startingDayOfWeek: 1,
 			disablePast: false,
 			disableFuture: false,
-			displayPeriodUom: "month",
+			displayPeriodUom: "week",
 			displayPeriodCount: 1,
 			showEventTimes: true,
 			newEventTitle: "",
 			newEventStartDate: "",
 			newEventEndDate: "",
 			useDefaultTheme: true,
-			useHolidayTheme: true,
-			events: [
-				{
-					id: "e0",
-					title: "Уже что-то получилось",
-					startDate: "2020-07-03 12:00",
-					endDate: "2020-07-03 22:00"
-				},
-				{
-					id: "e4",
-					startDate: this.thisMonth(22),
-					title: "День рождения!",
-					classes: "birthday",
-					url: "https://en.wikipedia.org/wiki/Birthday",
-				},
-				{
-					id: "e5",
-					startDate: this.thisMonth(11),
-					endDate: this.thisMonth(11),
-					title: "Другой цвет",
-					classes: "purple",
-				},
-				{
-					id: "e6",
-					startDate: this.thisMonth(29),
-					title: "Еще цвет",
-					classes: "orange",
-				}
-			],
+			useHolidayTheme: false,
+			events: [],
 		}
 	},
+	firestore () {
+		return {
+			events: db.collection('events')
+		}
+   },
 	computed: {
 		userLocale() {
 			return this.getDefaultBrowserLocale
@@ -148,6 +131,7 @@ export default {
 		this.newEventEndDate = this.isoYearMonthDay(this.today())
 	},
 	methods: {
+		
 		periodChanged(range, eventSource) {
 			// Demo does nothing with this information, just including the method to demonstrate how
 			// you can listen for changes to the displayed range and react to them (by loading events, etc.)
@@ -162,7 +146,17 @@ export default {
 			this.message = `You clicked: ${d.toLocaleDateString()}`
 		},
 		onClickEvent(e) {
-			this.message = `You clicked: ${e.title}`
+			var options = {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+				weekday: 'long',
+				timezone: 'UTC',
+				hour: 'numeric',
+				minute: 'numeric'
+				};
+			this.message = `Начало:${(new Date(e.startDate)).toLocaleString("ru", options) } 
+			Окончание: ${(new Date(e.endDate)).toLocaleString("ru", options) } ${e.title}`
 		},
 		setShowDate(d) {
 			this.message = `Changing calendar view to ${d.toLocaleDateString()}`
@@ -177,11 +171,10 @@ export default {
 			event.originalEvent.endDate = this.addDays(event.endDate, eLength)
 		},
 		clickTestAddEvent() {
-			this.events.push({
-				startDate: this.newEventStartDate,
-				endDate: this.newEventEndDate,
-				title: this.newEventTitle,
-			})
+			var startDate = this.newEventStartDate;
+			var endDate = this.newEventEndDate;
+			var title = this.newEventTitle;
+			db.collection('events').add({ title, startDate, endDate })
 			this.message = "You added an event!"
 		},
 	},
@@ -189,21 +182,20 @@ export default {
 </script>
 
 <style>
-html,
-body {
-	height: 100%;
-	margin: 0;
-	background-color: #f7fcff;
-}
 #calendar {
-	display: flex;
+	font-family: 'Avenir', Helvetica, Arial, sans-serif;
+		color: #2c3e50;
+		height: 65vh;
+		width: 95vw;
+		margin-left: auto;
+		margin-right: auto;
 }
-/* .calendar-controls {
+.calendar-controls {
 	margin-right: 1rem;
 	min-width: 14rem;
 	max-width: 14rem;
-} */
-/* .calendar-parent {
+} 
+ .calendar-parent {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
@@ -211,13 +203,11 @@ body {
 	overflow-y: hidden;
 	max-height: 80vh;
 	background-color: white;
-} */
+}
 /* For long calendars, ensure each week gets sufficient height. The body of the calendar will scroll if needed */
-/* .cv-wrapper.period-month.periodCount-2 .cv-week,
-.cv-wrapper.period-month.periodCount-3 .cv-week,
-.cv-wrapper.period-year .cv-week {
-	min-height: 6rem;
-} */
+.cv-weeks {
+	height: 60vh;
+}
 /* These styles are optional, to illustrate the flexbility of styling the calendar purely with CSS. */
 /* Add some styling for events tagged with the "birthday" class */
 .calendar .event.birthday {

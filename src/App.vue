@@ -85,6 +85,9 @@ body {
 main {
   display: flex;
 }
+.main {
+  display: flex;
+}
 header {
   height: 50px;
   box-shadow: 0 0 6px grey;
