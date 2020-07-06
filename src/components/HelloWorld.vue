@@ -15,6 +15,7 @@
         <div class="issue" v-for="(task, idx) in backlog" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
+          <pre>{{ task.priority }}</pre>
           <span>{{ dateTask(task.timeAdd) }}</span>
           <button @click="deleteLocation(task.id)">Delete</button>
         </div>
@@ -25,6 +26,7 @@
        <div class="issue" v-for="(task, idx) in inProgress" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
+          <pre>{{ task.priority }}</pre>
           <span>{{ dateTask(task.timeAdd) }}</span>
           <button @click="deleteLocation(task.id)">Delete</button>
         </div>
@@ -35,6 +37,7 @@
        <div class="issue" v-for="(task, idx) in reviews" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
+          <pre>{{ task.priority }}</pre>
           <span>{{ dateTask(task.timeAdd) }}</span>
           <button @click="deleteLocation(task.id)">Delete</button>
         </div>
@@ -45,6 +48,7 @@
        <div class="issue" v-for="(task, idx) in done" :key="idx">
           <h1>{{ task.title }}</h1>
           <p>{{ task.text }}</p>
+          <pre>{{ task.priority }}</pre>
           <span>{{ dateTask(task.timeAdd) }}</span>
           <button @click="deleteLocation(task.id)">Delete</button>
         </div>
@@ -155,7 +159,8 @@ section {
 }
 .column {
   background: #f4f5f7;
-  min-width: 25%;
+  min-width: calc(25% - 5px);
+  margin-right: 5px;
 }
 
 h5 {

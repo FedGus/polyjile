@@ -30,9 +30,16 @@
       <transition name="fade" appear>
       <div class="modal-overlay" v-if="showModal">
         <div class="modal">
-          <form @submit="addLocation(title, text)">
+          <form @submit="addTask(title, text, priority)">
             <input v-model="title" placeholder="Тема">
             <input v-model="text" placeholder="Описание">
+            <select v-model="priority" placeholder="Приоритет">
+              <option value="highest">Highest</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+              <option value="lowest">Lowest</option>
+            </select>
             <button class="button-primary" type="submit">Создать</button>
           </form>
           <button @click="showModal=false">Отмена</button>
@@ -50,7 +57,7 @@ import { db } from './main'
 export default {
   name: 'App',
   components: {
-    //HelloWorld
+    
   },
   data() {
     return {
@@ -61,10 +68,10 @@ export default {
     }
   },
   methods: {
-    addLocation (title, text) {      // <-- новый метод
+    addTask (title, text, priority) {      // <-- новый метод
      const timeAdd = (new Date()).toString()
      const status = 'backlog'
-     db.collection('tasks').add({ title, text, timeAdd, status })
+     db.collection('tasks').add({ title, text, priority, timeAdd, status })
    }
   }
 }
