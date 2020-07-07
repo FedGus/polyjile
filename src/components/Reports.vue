@@ -26,15 +26,23 @@ import { db } from '../main'
            tooltips: {
             enabled: false
         },
+        scales: {
+    yAxes: [{
+      barPercentage: 0.5
+    }]
+  },
+  
           plugins: {
             datalabels: {
-                color: '#fff',
-                textAlign: 'center',
+                color: '#000',
+                anchor: 'end',
+                align: 'end',
+                offset: 1,
                 font: {
                     lineHeight: 1.6
                 },
                 formatter: function(value) {
-                    return (value / 4) * 100 + '%';
+                    return value;
                 }
             }
         }
