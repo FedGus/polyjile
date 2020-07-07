@@ -90,7 +90,7 @@ export default {
 	data() {
 		return {
 			/* Show the current month, and give it some fake events to show */
-			showDate: this.thisMonth(1),
+			showDate: new Date(),
 			addEvent: false,
 			message: "",
 			startingDayOfWeek: 1,

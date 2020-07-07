@@ -1,9 +1,7 @@
 <template>
 
   <div class="small">
-    <line-chart :chart-data="datacollection"></line-chart>
-    <button @click="fillData()">Randomize</button>
-
+    <line-chart :options="options"  :chart-data="fillData()"></line-chart>
   </div>
   
 </template>
@@ -11,6 +9,7 @@
 <script>
 import { db } from '../main'
   import LineChart from '../chart'
+  import ChartDataLabels from 'chartjs-plugin-datalabels';
 
   export default {
     components: {
@@ -18,7 +17,30 @@ import { db } from '../main'
     },
     data () {
       return {
-        datacollection: {} ,
+        plugins: [ChartDataLabels],
+        options: {
+        title: {
+            display: true,
+            text: 'Задачи: по приоритету'
+          },
+           tooltips: {
+            enabled: false
+        },
+          plugins: {
+            datalabels: {
+                color: '#fff',
+                textAlign: 'center',
+                font: {
+                    lineHeight: 1.6
+                },
+                formatter: function(value) {
+                    return (value / 4) * 100 + '%';
+                }
+            }
+        }
+          
+        },
+        datacollection: {},
         highest: [],
         high: [],
         medium: [],
@@ -27,38 +49,42 @@ import { db } from '../main'
       }
     },
     firestore () {
-      return {
+      return  {
         highest: db.collection('tasks').where('priority', '==', 'highest'),
         high: db.collection('tasks').where('priority', '==', 'high'),
         medium: db.collection('tasks').where('priority', '==', 'medium'),
         low: db.collection('tasks').where('priority', '==', 'low'),
         lowest: db.collection('tasks').where('priority', '==', 'lowest')
-        }
-    },
-    mounted () {
-      this.fillData()
+             }
     },
     methods: {
       fillData () {
-        this.datacollection = {
+        return {
           labels: ['Highest', "High", "Medium", "Low", "Lowest"],
           datasets: [
             {
-              label: 'this.',
-              backgroundColor: '#f87979',
+              label: 'Задачи',
+              backgroundColor: '#3c78b5',
               data: [this.highest.length, this.high.length, this.medium.length, this.low.length, this.lowest.length]
             }
           ]
-        },
-        console.log(this.highest.length)
+        }
       },
+  },
+  computed: {
+    myStyles () {
+      return {
+        height: `${this.height}px`,
+        position: 'relative'
+      }
+    }
   }
+  
 }
 </script>
 
 <style>
   .small {
     max-width: 600px;
-    margin:  150px auto;
   }
 </style>
