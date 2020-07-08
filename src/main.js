@@ -24,19 +24,23 @@ export const db = firebase.firestore()
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
-import Dashboard from './components/Dashboard.vue';
-import Calendar from './components/Calendar.vue';
-import HelloWorld from './components/HelloWorld.vue';
-import Testing from './components/Testing.vue';
-import Reports from './components/Reports.vue';
+import Dashboard from './components/Views/Dashboard.vue';
+import Calendar from './components/Views/Calendar.vue';
+import Tasks from './components/Views/Tasks.vue';
+import Testing from './components/Views/Testing.vue';
+import Reports from './components/Views/Reports.vue';
+import Register from './components/Register.vue';
+import "firebase/auth";
+
 
 var router = new VueRouter({
   routes: [
-    {path: '/dashboard', component: Dashboard},
-    {path: '/hello', component: HelloWorld},
+    {path: '/dashboard', name: "dashboard", component: Dashboard},
+    {path: '/tasks', component: Tasks},
     {path: '/calendar', component: Calendar},
     {path: '/testing', component: Testing},
-    {path: '/reports', component: Reports}
+    {path: '/reports', component: Reports},
+    {path: "/register", name: "register", component: Register}
   ]
 })
 new Vue({
