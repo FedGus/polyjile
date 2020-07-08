@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="main">
+      <Menu></Menu>
       <div class="board">
         <section>
           <div class="column">
@@ -70,11 +71,13 @@
 <script>
 import { db } from "../../main";
 import draggable from "vuedraggable";
+import Menu from './Menu.vue'
 
 export default {
   name: "Tasks",
   components: {
-    draggable
+    draggable,
+    Menu
   },
   data() {
     return {

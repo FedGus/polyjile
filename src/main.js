@@ -30,6 +30,7 @@ import Tasks from './components/Views/Tasks.vue';
 import Testing from './components/Views/Testing.vue';
 import Reports from './components/Views/Reports.vue';
 import Register from './components/Register.vue';
+import Login from './components/Login.vue';
 import "firebase/auth";
 
 
@@ -40,7 +41,8 @@ var router = new VueRouter({
     {path: '/calendar', component: Calendar},
     {path: '/testing', component: Testing},
     {path: '/reports', component: Reports},
-    {path: "/register", name: "register", component: Register}
+    {path: "/register", name: "register", component: Register},
+    {path: "/login", name: "login", component: Login}
   ]
 })
 new Vue({

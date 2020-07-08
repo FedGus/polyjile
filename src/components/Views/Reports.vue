@@ -1,17 +1,22 @@
 <template>
+<div class="main">
+<Menu></Menu>
   <div class="small">
     <line-chart :options="options" :chart-data="fillData()"></line-chart>
   </div>
+</div>
 </template>
 
 <script>
 import { db } from "../../main";
 import LineChart from "../../chart";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import Menu from './Menu.vue'
 
 export default {
   components: {
-    LineChart
+    LineChart,
+    Menu
   },
   data() {
     return {

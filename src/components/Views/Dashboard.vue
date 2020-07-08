@@ -1,4 +1,6 @@
 <template>
+<div class="main">
+  <Menu></Menu>
   <div id="small-calendar">
     <calendar-view
       :show-date="showDate"
@@ -14,11 +16,13 @@
       @input="setShowDate" />-->
     </calendar-view>
   </div>
+</div>
 </template>
 
 <script>
 import { db } from "../../main";
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
+import Menu from './Menu.vue'
 // The next two lines are processed by webpack. If you're using the component without webpack compilation,
 // you should just create <link> elements for these. Both are optional, you can create your own theme if you prefer.
 require("vue-simple-calendar/static/css/default.css");
@@ -28,7 +32,7 @@ export default {
       showDate: new Date(),
       showEventTimes: true,
       displayPeriodUom: "week",
-      events: []
+      events: [],
     };
   },
   firestore() {
@@ -38,7 +42,8 @@ export default {
   },
   components: {
     CalendarView,
-    CalendarViewHeader
+    CalendarViewHeader,
+    Menu
   },
   methods: {
     setShowDate(d) {

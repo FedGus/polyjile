@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <Menu></Menu>
     <div id="calendar">
       <div class="calendar-controls">
         <div v-if="message" class="notification is-success">{{ message }}</div>
@@ -67,6 +68,7 @@
 <script>
 // For testing against the published version
 import { db } from "../../main";
+import Menu from './Menu.vue'
 import {
   CalendarView,
   CalendarViewHeader,
@@ -86,7 +88,8 @@ export default {
   name: "calendar",
   components: {
     CalendarView,
-    CalendarViewHeader
+    CalendarViewHeader,
+    Menu
   },
   mixins: [CalendarMathMixin],
   data() {
