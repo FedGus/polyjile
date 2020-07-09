@@ -1,16 +1,24 @@
 <template>
-  <div>
+  <div class="item">
+    <div class="item-header">
+      <h3>Регистрация</h3>
+    </div>
+    <div class="item-content">
     <div class="error" v-if="error">{{error.message}}</div>
     <form @submit.prevent="pressed">
-      Register
-      <div class="email">
+      <div class="field-group">
+        <label>E-mail</label>
         <input type="email" v-model="email" placeholder="email" />
       </div>
-      <div class="password">
+      <div class="field-group">
+        <label>Пароль</label>
         <input type="password" v-model="password" placeholder="password" />
       </div>
+      <div class="field-group">
       <button type="submit">Register</button>
+      </div>
     </form>
+    </div>
   </div>
 </template>
 
@@ -43,16 +51,5 @@ export default {
 .error {
   color: red;
   font-size: 18px;
-}
-input {
-  width: 400px;
-  padding: 30px;
-  margin: 20px;
-  font-size: 21px;
-}
-button {
-  width: 400px;
-  height: 75px;
-  font-size: 100%;
 }
 </style>

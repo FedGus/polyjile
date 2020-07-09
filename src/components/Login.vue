@@ -1,17 +1,25 @@
 <template>
-  <div>
-    <h3>Login</h3>
+<div class="item">
+  <div class="item-header">
+    <h3>Вход</h3>
+  </div>
+  <div class="item-content">
     <form @submit.prevent="pressed">
-      <div class="login">
+      <div class="field-group">
+        <label>Логин</label>
         <input type="text" placeholder="login" v-model="email" />
       </div>
-      <div class="password">
+      <div class="field-group">
+        <label>Пароль</label>
         <input type="password" placeholder="password" v-model="password" />
       </div>
+      <div class="field-group">
       <button>Login</button>
+      </div>
     </form>
     <div class="error" v-if="error">{{error.message}}</div>
   </div>
+</div>
 </template>
 
 <script>
@@ -46,18 +54,9 @@ export default {
 div {
   color: inherit;
 }
-input {
-  width: 400px;
-  padding: 30px;
-  margin: 20px;
-  font-size: 21px;
-}
-button {
-  width: 400px;
-  height: 75px;
-  font-size: 100%;
-}
+
 .error {
   color: red;
 }
+
 </style>
