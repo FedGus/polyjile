@@ -37,18 +37,33 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 header {
-  height: 50px;
-  box-shadow: 0 0 6px grey;
+  background: #0747a6;
+  color: #deebff;
+  padding: 0 10px;
   position: relative;
+  display: flex;
   z-index: 3;
+}
+
+header a {
+  color: #deebff;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 13px 10px;
+}
+.primary-header {
+  background: #2684ff;
+}
+.nav-header {
+  display: flex;
+  position: absolute;
+  right: 10px;
 }
 .sidebar {
   width: 45px;
@@ -62,5 +77,4 @@ ion-icon {
   font-size: 20px;
   color: #172b4d;
 }
-
 </style>
