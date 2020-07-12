@@ -2,14 +2,12 @@
   <div id="app">
     <header>
       <img class="logo" alt="polyweb" src="./assets/logo.png">
-      <button @click="showModal = true" class="primary-header">Создать</button>
-      <router-link to="/register">Регистрация</router-link>
-      <a @click="show = !show">Меню</a>
+        <a v-if="loggedIn" @click="show = !show">Меню</a>
+        <router-link to="/register">Регистрация</router-link>
+        <button v-if="loggedIn" @click="showModal = true" class="primary-header">Создать</button>
       <div class="nav-header">
         <input type="search" placeholder="Поиск">
-        <div v-if="loggedIn">
-          <a @click="signOut">Выйти</a>
-        </div>
+          <a v-if="loggedIn" @click="signOut">Выйти</a>
         <span v-else><a @click="signOut">Войти</a></span>
       </div>
       
@@ -92,6 +90,7 @@ export default {
         if (user) {
           // User is signed in.
           console.log("signed in");
+          this.$router.replace({ name: "dashboard" });
           this.loggedIn = true;
         } else {
           // No user is signed in.
@@ -190,6 +189,7 @@ input[type="search"] {
 .main {
   display: flex;
   background: #fff;
+  height: calc(100vh - 42px);
 }
 .modal {
   background: #fff;
@@ -204,7 +204,7 @@ input[type="search"] {
   box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
     0 0 1px rgba(9, 30, 66, 0.31);
   z-index: 11;
-  width: 60%
+  width: 60%;
 }
 .modal-overlay {
   position: fixed;

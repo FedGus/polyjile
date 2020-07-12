@@ -21,44 +21,48 @@
           <div class="column">
             <draggable group="tasks" :list="backlog" @change="backlogCol">
               <div class="issue" v-for="(task, idx) in backlog" :key="idx">
-                <h1>{{ task.title }}</h1>
-                <p>{{ task.text }}</p>
-                <pre>{{ task.priority }}</pre>
+                <span class="ghx-key">{{ task.title }}</span>
+                <span>{{ task.text }}</span>
+                <img src="../../assets/avatar.jpg" alt="Исполнитель" class="ghx-avatar-img">
+                <img :src="iconPriority(task.priority)" class="ghx-priority">
                 <span>{{ dateTask(task.timeAdd) }}</span>
-                <button @click="deleteLocation(task.id)">Delete</button>
+                <!-- <button @click="deleteLocation(task.id)">Delete</button> -->
               </div>
             </draggable>
           </div>
           <div class="column">
             <draggable group="tasks" :list="inProgress" @change="progressCol">
               <div class="issue" v-for="(task, idx) in inProgress" :key="idx">
-                <h1>{{ task.title }}</h1>
-                <p>{{ task.text }}</p>
-                <pre>{{ task.priority }}</pre>
+                <span class="ghx-key">{{ task.title }}</span>
+                <span>{{ task.text }}</span>
+                <img src="../../assets/avatar.jpg" alt="Исполнитель" class="ghx-avatar-img">
+                <img :src="iconPriority(task.priority)" class="ghx-priority">
                 <span>{{ dateTask(task.timeAdd) }}</span>
-                <button @click="deleteLocation(task.id)">Delete</button>
+                <!-- <button @click="deleteLocation(task.id)">Delete</button> -->
               </div>
             </draggable>
           </div>
           <div class="column">
             <draggable group="tasks" :list="reviews" @change="reviewCol">
               <div class="issue" v-for="(task, idx) in reviews" :key="idx">
-                <h1>{{ task.title }}</h1>
-                <p>{{ task.text }}</p>
-                <pre>{{ task.priority }}</pre>
+                <span class="ghx-key">{{ task.title }}</span>
+                <span>{{ task.text }}</span>
+                <img src="../../assets/avatar.jpg" alt="Исполнитель" class="ghx-avatar-img">
+                <img :src="iconPriority(task.priority)" class="ghx-priority">
                 <span>{{ dateTask(task.timeAdd) }}</span>
-                <button @click="deleteLocation(task.id)">Delete</button>
+                <!-- <button @click="deleteLocation(task.id)">Delete</button> -->
               </div>
             </draggable>
           </div>
           <div class="column">
             <draggable group="tasks" :list="done" @change="doneCol">
               <div class="issue" v-for="(task, idx) in done" :key="idx">
-                <h1>{{ task.title }}</h1>
-                <p>{{ task.text }}</p>
-                <pre>{{ task.priority }}</pre>
+               <span class="ghx-key">{{ task.title }}</span>
+                <span>{{ task.text }}</span>
+                <img src="../../assets/avatar.jpg" alt="Исполнитель" class="ghx-avatar-img">
+                <img :src="iconPriority(task.priority)" class="ghx-priority">
                 <span>{{ dateTask(task.timeAdd) }}</span>
-                <button @click="deleteLocation(task.id)">Delete</button>
+                <!-- <button @click="deleteLocation(task.id)">Delete</button> -->
               </div>
             </draggable>
           </div>
@@ -71,7 +75,7 @@
 <script>
 import { db } from "../../main";
 import draggable from "vuedraggable";
-import Menu from './Menu.vue'
+import Menu from "./Menu.vue";
 
 export default {
   name: "Tasks",
@@ -98,19 +102,22 @@ export default {
   methods: {
     dateTask(date) {
       var options = {
-        year: "numeric",
-        month: "long",
         day: "numeric",
-        weekday: "long",
-        timezone: "UTC",
-        hour: "numeric",
-        minute: "numeric"
+        month: "long"
       };
       return new Date(date).toLocaleString("ru", options);
     },
+    iconPriority(priority) {
+      if (priority == "highest") return require("../../assets/highest.svg");
+      if (priority == "high") return require("../../assets/high.svg");
+      if (priority == "medium") return require("../../assets/medium.svg");
+      if (priority == "low") return require("../../assets/low.svg");
+      if (priority == "lowest") return require("../../assets/lowest.svg");
+    },
     deleteLocation(id) {
       // <-- новый метод
-      db.collection("tasks")
+      db
+        .collection("tasks")
         .doc(id)
         .delete();
     },
@@ -119,7 +126,8 @@ export default {
       // if (evt.added) {
 
       //   let status = "backlog";
-      db.collection("tasks")
+      db
+        .collection("tasks")
         .doc(evt.added.element.id)
         .update({ status: "backlog" });
       this.backlog.splice(evt.added.newIndex, 1);
@@ -130,7 +138,8 @@ export default {
       // if (evt.added) {
       //   let idEl = evt.added.element.id;
       //   let status = "progress";
-      db.collection("tasks")
+      db
+        .collection("tasks")
         .doc(evt.added.element.id)
         .update({ status: "progress" });
       this.inProgress.splice(evt.added.newIndex, 1);
@@ -141,7 +150,8 @@ export default {
       // if (evt.added) {
       //   let idEl = evt.added.element.id;
       //   let status = "review";
-      db.collection("tasks")
+      db
+        .collection("tasks")
         .doc(evt.added.element.id)
         .update({ status: "review" });
       this.reviews.splice(evt.added.newIndex, 1);
@@ -152,7 +162,8 @@ export default {
       // if (evt.added) {
       //   let idEl = evt.added.element.id;
       //   let status = "done";
-      db.collection("tasks")
+      db
+        .collection("tasks")
         .doc(evt.added.element.id)
         .update({ status: "done" });
       this.done.splice(evt.added.newIndex, 1);
@@ -183,6 +194,19 @@ h5 {
 .board {
   display: flex;
   flex-direction: column;
+}
+.ghx-key {
+  color: #5e6c84;
+  font-weight: 600;
+  line-height: 1.66666667;
+  letter-spacing: 0;
+  outline: 0;
+  text-transform: uppercase;
+}
+span {
+  padding: 1px;
+  display: block;
+  font-size: 12px;
 }
 
 .issue {
@@ -215,5 +239,25 @@ button {
   color: #fff;
   text-decoration: none;
   font-weight: 600;
+}
+.ghx-avatar-img {
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  min-width: 32px;
+  cursor: default;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+.ghx-priority {
+  height: 16px;
+  width: 16px;
+  overflow: hidden;
 }
 </style>
